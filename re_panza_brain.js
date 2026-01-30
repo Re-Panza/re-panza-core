@@ -40,7 +40,23 @@ async function chiediAlRe() {
         if (!response.ok) throw new Error("Server error");
 
         const data = await response.json();
-        loadingMsg.innerHTML = `<div style="color:#ffcc00; font-weight:bold;">👑 Re Panza:</div>${data.risposta}`;
+const testoRisposta = data.risposta;
+
+// Prepariamo il contenitore per la risposta del Re
+loadingMsg.innerHTML = `<div style="color:#ffcc00; font-weight:bold;">👑 Re Panza:</div><span id="typing-area"></span>`;
+const typingArea = loadingMsg.querySelector("#typing-area");
+
+let i = 0;
+function typeWriter() {
+    if (i < testoRisposta.length) {
+        typingArea.innerHTML += testoRisposta.charAt(i);
+        i++;
+        chatContent.scrollTop = chatContent.scrollHeight; // Scroll automatico mentre scrive
+        setTimeout(typeWriter, 20); // 20ms è la velocità: più basso = più veloce
+    }
+}
+
+typeWriter(); // Avvia l'effetto scrittura
         
     } catch (e) {
         console.error("Errore Re Panza:", e);
