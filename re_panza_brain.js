@@ -15,6 +15,7 @@ async function chiediAlRe() {
     
     if (!question) return;
 
+    // Aggiungi messaggio utente
     chatContent.innerHTML += `<div style="color:#ffcc00; margin-top:10px; font-weight:bold;">👉 Voi:</div><div style="margin-bottom:10px;">${question}</div>`;
     
     const loadingMsg = document.createElement("div");
@@ -32,16 +33,27 @@ async function chiediAlRe() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 prompt: question,
-                // Questo recupera i dati del player se la pagina li sta visualizzando
                 datiPlayer: typeof DB_STORICO !== 'undefined' ? DB_STORICO : "Nessun dato specifico fornito."
             })
         });
+
+        if (!response.ok) throw new Error("Server error");
 
         const data = await response.json();
         loadingMsg.innerHTML = `<div style="color:#ffcc00; font-weight:bold;">👑 Re Panza:</div>${data.risposta}`;
         
     } catch (e) {
-        loadingMsg.innerHTML = "👑 Le pergamene sono bagnate! Controlla la connessione al regno.";
+        console.error("Errore Re Panza:", e);
+        loadingMsg.innerHTML = "👑 Le pergamene sono bagnate! Controlla la connessione al regno (o la chiave API su Vercel).";
     }
     chatContent.scrollTop = chatContent.scrollHeight;
 }
+
+// --- AGGIUNTA CHIRURGICA PER IL TASTO INVIO ---
+// Questo pezzo mancava nel file che mi hai mandato!
+document.addEventListener('keypress', function (e) {
+    const inputField = document.getElementById('ai-input');
+    if (e.key === 'Enter' && document.activeElement === inputField) {
+        chiediAlRe();
+    }
+});
