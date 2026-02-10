@@ -33,7 +33,7 @@ async function chiediAlRe() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 prompt: question,
-                datiPlayer: typeof DB_STORICO !== 'undefined' ? DB_STORICO : "Nessun dato specifico fornito."
+                //datiPlayer: typeof DB_STORICO !== 'undefined' ? DB_STORICO : "Nessun dato specifico fornito."
             })
         });
 
